@@ -24,6 +24,9 @@ import {
     useHistory,
     useParams
 } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { UserAction } from '../../store/actions/userAction';
 
 
 
@@ -50,7 +53,12 @@ const Login = () => {
     }));
 
     const classes = useStyles();
+    const store=useSelector((store)=>store)
+    const dispatch=useDispatch();
+    const params= useParams();
+    const history=useHistory();
 
+    console.log(store,'====store');
 
     const [user, setUser] = useState(
         {
@@ -81,7 +89,10 @@ const Login = () => {
                 }
 
             );
-            console.log(response.data, '===resoponse.data')
+            console.log(response.data.userInfo, '===resoponse.data')
+            dispatch(UserAction(response.data.userInfo))
+            alert('Login Successful')
+            history.push('/')
         } catch (e) {
             console.log(e,'===error')
             alert('An unexpected error occured. Please try again later')

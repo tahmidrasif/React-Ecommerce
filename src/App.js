@@ -45,6 +45,9 @@ import {
   useHistory,
   useParams
 } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import store from './store';
+import { UserAction } from './store/actions/userAction';
 
 const drawerWidth = 240;
 
@@ -130,6 +133,9 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const store=useSelector((store)=>store)
+  const dispatch=useDispatch();
+  const history=useHistory();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -137,7 +143,14 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  
+  const setLoginLogout=(userInfo)=>{
+    if(userInfo!==null){
+      dispatch(UserAction({}));
+    }
+    history.push('/login')
+  }
+  console.log(store.UserReducer.userInfo,'===User Reducer Length')
   return (
 
     <>
@@ -171,9 +184,9 @@ function App() {
                   <ShoppingBasketIcon />
                 </Badge>
               </IconButton>
-              <IconButton color="inherit">
+              <IconButton color="inherit" onClick={()=>setLoginLogout(store.UserReducer.userInfo)}>
                 <Badge color="secondary">
-                  Login
+                  {store.UserReducer.userInfo?'Log in':'Log out'}
                 </Badge>
               </IconButton>
 
