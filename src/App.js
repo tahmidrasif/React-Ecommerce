@@ -145,12 +145,14 @@ function App() {
   };
   
   const setLoginLogout=(userInfo)=>{
-    if(userInfo!==null){
+    
+    if(userInfo.token){
       dispatch(UserAction({}));
+      console.log(userInfo.token,'===userinfo token')
     }
     history.push('/login')
   }
-  console.log(store.UserReducer.userInfo,'===User Reducer Length')
+ console.log(store.UserReducer.userInfo.token,'===user reducer in app.js')
   return (
 
     <>
@@ -186,7 +188,7 @@ function App() {
               </IconButton>
               <IconButton color="inherit" onClick={()=>setLoginLogout(store.UserReducer.userInfo)}>
                 <Badge color="secondary">
-                  {store.UserReducer.userInfo?'Log in':'Log out'}
+                  {!store.UserReducer.userInfo.token?'Log in':'Log out'}
                 </Badge>
               </IconButton>
 
