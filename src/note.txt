@@ -1,0 +1,26 @@
+
+http://localhost:8080/category
+{"name": "test Category",
+"description": "Description"
+}
+
+http://localhost:8080/user
+{
+	"email": "r@mail.com",
+	"username": "tahmidrasif",
+	"password": "abcd1234.",
+	"firstname": "John",
+	"lastname": "Doe",
+	"address": {
+		"city": "",
+		"street": "",
+		"number": "",
+		"zipcode": "",
+		"geolocation": {
+			"lat": "",
+			"long": ""
+		}
+	},
+	"phone": "",
+	"role": "user"
+}

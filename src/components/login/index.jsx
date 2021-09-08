@@ -90,9 +90,14 @@ const Login = () => {
 
             );
             console.log(response.data.userInfo, '===resoponse.data')
-            dispatch(UserAction(response.data.userInfo))
-            alert('Login Successful')
-            history.push('/')
+            if(response.data.userInfo){
+                dispatch(UserAction(response.data.userInfo))
+                alert(response.data.message)
+                history.push('/')
+            }
+            else{
+                alert(response.data.message)
+            }
         } catch (e) {
             console.log(e,'===error')
             alert('An unexpected error occured. Please try again later')

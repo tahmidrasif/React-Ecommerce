@@ -152,7 +152,7 @@ function App() {
     }
     history.push('/login')
   }
- console.log(store.UserReducer.userInfo.token,'===user reducer in app.js')
+ //console.log(store.UserReducer.userInfo.token,'===user reducer in app.js')
   return (
 
     <>
@@ -201,7 +201,8 @@ function App() {
             }}
             open={open}
           >
-
+            {store.UserReducer.userInfo.token && store.UserReducer.userInfo.role==='admin' ?
+            <>
             <Divider />
             <List
               subheader={
@@ -224,6 +225,8 @@ function App() {
               </ListItem>
               {/* {mainListItems} */}
             </List>
+            </>:<></>
+            }  
             <Divider />
             <List
               subheader={
