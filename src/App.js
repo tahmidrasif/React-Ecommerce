@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -36,6 +36,7 @@ import Approuter from './approuter';
 import Login from './components/login';
 import SignUp from './components/signup/index'
 
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -46,8 +47,9 @@ import {
   useParams
 } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import store from './store';
-import { UserAction } from './store/actions/userAction';
+
+import { UserAction } from './store/actions/userActions/userAction';
+import { GetCategoryList } from './store/actions/categoryAction/categoryAction'
 
 const drawerWidth = 240;
 
@@ -133,9 +135,9 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
-  const store=useSelector((store)=>store)
-  const dispatch=useDispatch();
-  const history=useHistory();
+  const store = useSelector((store) => store)
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -143,16 +145,35 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  
-  const setLoginLogout=(userInfo)=>{
-    
-    if(userInfo.token){
+
+
+  const { categoryList } = useSelector((store) => store.CategoryReducer);
+
+
+  useEffect(() => {
+
+    if (!categoryList.length)
+      dispatch(GetCategoryList())
+
+    //console.log(categoryList, '===useEffect in appjs');
+    categoryList.map((item) => {
+    //  console.log(item, '===loop through category item');
+    })
+
+
+  }, [categoryList])
+
+
+  const setLoginLogout = (userInfo) => {
+
+    if (userInfo.token) {
       dispatch(UserAction({}));
-      console.log(userInfo.token,'===userinfo token')
+      //console.log(userInfo.token, '===userinfo token')
     }
     history.push('/login')
   }
- //console.log(store.UserReducer.userInfo.token,'===user reducer in app.js')
+
+  //console.log(store.UserReducer.userInfo.token,'===user reducer in app.js')
   return (
 
     <>
@@ -161,7 +182,7 @@ function App() {
           <Login />
         </Route>
         <Route exact path='/signup/'>
-          <SignUp/>
+          <SignUp />
         </Route>
         <div className={classes.root}>
           <CssBaseline />
@@ -186,9 +207,9 @@ function App() {
                   <ShoppingBasketIcon />
                 </Badge>
               </IconButton>
-              <IconButton color="inherit" onClick={()=>setLoginLogout(store.UserReducer.userInfo)}>
+              <IconButton color="inherit" onClick={() => setLoginLogout(store.UserReducer.userInfo)}>
                 <Badge color="secondary">
-                  {!store.UserReducer.userInfo.token?'Log in':'Log out'}
+                  {!store.UserReducer.userInfo.token ? 'Log in' : 'Log out'}
                 </Badge>
               </IconButton>
 
@@ -201,32 +222,32 @@ function App() {
             }}
             open={open}
           >
-            {store.UserReducer.userInfo.token && store.UserReducer.userInfo.role==='admin' ?
-            <>
-            <Divider />
-            <List
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  Admin
-                </ListSubheader>
-              }>
-              <ListItem button key='Categories'>
-                <ListItemIcon><CategoryIcon />  </ListItemIcon>
-                <ListItemText primary='Categories' />
-              </ListItem>
+            {store.UserReducer.userInfo.token && store.UserReducer.userInfo.role === 'admin' ?
+              <>
+                <Divider />
+                <List
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Admin
+                    </ListSubheader>
+                  }>
+                  <ListItem button key='Categories'>
+                    <ListItemIcon><CategoryIcon />  </ListItemIcon>
+                    <ListItemText primary='Categories' />
+                  </ListItem>
 
-              <ListItem button key='Products'>
-                <ListItemIcon><ShoppingBasketIcon />  </ListItemIcon>
-                <ListItemText primary='Products' />
-              </ListItem>
-              <ListItem button key='Users'>
-                <ListItemIcon><PersonIcon />  </ListItemIcon>
-                <ListItemText primary='Users' />
-              </ListItem>
-              {/* {mainListItems} */}
-            </List>
-            </>:<></>
-            }  
+                  <ListItem button key='Products'>
+                    <ListItemIcon><ShoppingBasketIcon />  </ListItemIcon>
+                    <ListItemText primary='Products' />
+                  </ListItem>
+                  <ListItem button key='Users'>
+                    <ListItemIcon><PersonIcon />  </ListItemIcon>
+                    <ListItemText primary='Users' />
+                  </ListItem>
+                  {/* {mainListItems} */}
+                </List>
+              </> : <></>
+            }
             <Divider />
             <List
               subheader={
@@ -235,19 +256,15 @@ function App() {
                 </ListSubheader>
               }>
               {/* {secondaryListItems} */}
-              <ListItem button key='Categories'>
-                <ListItemIcon><CategoryIcon />  </ListItemIcon>
-                <ListItemText primary='Categories' />
-              </ListItem>
+              {categoryList.map((item) =>
 
-              <ListItem button key='Products'>
-                <ListItemIcon><ShoppingBasketIcon />  </ListItemIcon>
-                <ListItemText primary='Products' />
-              </ListItem>
-              <ListItem button key='Users'>
-                <ListItemIcon><PersonIcon />  </ListItemIcon>
-                <ListItemText primary='Users' />
-              </ListItem>
+
+                <ListItem button key='Categories'>
+                  <ListItemIcon><CategoryIcon />  </ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItem>
+              )}
+              
             </List>
           </Drawer>
           <main className={classes.content}>

@@ -1,4 +1,4 @@
-import { ActionType } from "../../lib/constant";
+import { ActionType } from "../../../lib/constant";
 
 const intialState={
     userInfo:{},

@@ -1,5 +1,5 @@
   
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
@@ -15,6 +15,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Copyright from '../uicomponents/copyright';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { GetProductList } from '../../store/actions/productAction/productAction';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -52,6 +55,13 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductList=()=>{
     const classes = useStyles();
+    const dispatch=useDispatch();
+    const {productList}=useSelector((store)=>store.ProductReducer)
+
+    useEffect(()=>{
+       if(!productList.length)
+        dispatch(GetProductList())
+    },[productList])
     return(
         
         <React.Fragment>
@@ -63,8 +73,9 @@ const ProductList=()=>{
           <Container className={classes.cardGrid} maxWidth="lg">
             {/* End hero unit */}
             <Grid container spacing={4}>
-              {cards.map((card) => (
-                <Grid item key={card} xs={12} sm={6} md={4}>
+              {productList.map((item) => (
+                <Grid item  xs={12} sm={6} md={4}>
+                  {/* key={card} */}
                   <Card className={classes.card}>
                     <CardMedia
                       className={classes.cardMedia}
@@ -73,18 +84,18 @@ const ProductList=()=>{
                     />
                     <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant="h5" component="h2">
-                        Heading
+                        {item.title}
                       </Typography>
                       <Typography>
-                        This is a media card. You can use this section to describe the content.
+                       {item.description}
                       </Typography>
                     </CardContent>
                     <CardActions>
                       <Button size="small" color="primary">
-                        View
+                        Details
                       </Button>
                       <Button size="small" color="primary">
-                        Edit
+                        Add To Cart
                       </Button>
                     </CardActions>
                   </Card>

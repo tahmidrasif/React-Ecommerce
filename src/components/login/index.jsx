@@ -26,7 +26,7 @@ import {
 } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { UserAction } from '../../store/actions/userAction';
+import { UserAction } from '../../store/actions/userActions/userAction';
 
 
 
