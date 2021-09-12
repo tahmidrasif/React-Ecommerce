@@ -13,14 +13,17 @@ import {
   useParams
 } from "react-router-dom";
 import { Provider } from 'react-redux';
-import store from './store/index'
+import store, { persistor } from './store/index';
+import { PersistGate } from 'redux-persist/integration/react'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
+      <PersistGate persistor={persistor}>
+        <Router>
+          <App />
+        </Router>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

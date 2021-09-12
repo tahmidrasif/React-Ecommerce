@@ -14,6 +14,17 @@ export const CategoryAction = (categories) => {
     )
 }
 
+
+export const CurrentCategoryAction = (category) => {
+    console.log(category,'=== category clicked in action')
+    return (
+        {
+            type: ActionType.CURRENT_CATEGORY,
+            payload: category
+        }
+    )
+}
+
 export const GetCategoryList = () => {
     return (
         async (dispatch) => {

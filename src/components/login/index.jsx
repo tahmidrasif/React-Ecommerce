@@ -53,12 +53,12 @@ const Login = () => {
     }));
 
     const classes = useStyles();
-    const store=useSelector((store)=>store)
-    const dispatch=useDispatch();
-    const params= useParams();
-    const history=useHistory();
+    const store = useSelector((store) => store)
+    const dispatch = useDispatch();
+    const params = useParams();
+    const history = useHistory();
 
-    console.log(store,'====store');
+    console.log(store, '====store');
 
     const [user, setUser] = useState(
         {
@@ -90,16 +90,16 @@ const Login = () => {
 
             );
             console.log(response.data.userInfo, '===resoponse.data')
-            if(response.data.userInfo){
+            if (response.data.userInfo) {
                 dispatch(UserAction(response.data.userInfo))
                 alert(response.data.message)
                 history.push('/')
             }
-            else{
+            else {
                 alert(response.data.message)
             }
         } catch (e) {
-            console.log(e,'===error')
+            console.log(e, '===error')
             alert('An unexpected error occured. Please try again later')
         }
 
@@ -108,74 +108,80 @@ const Login = () => {
     useEffect(() => {
         console.log('user effect')
     }, [user])
-    return (
 
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
-                {/* <form className={classes.form} noValidate> */}
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    onChange={((e) => setLoginData(e, 'email'))}
-                />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    onChange={((e) => setLoginData(e, 'password'))}
-                />
-                <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                />
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    onClick={userLogin}
-                >
-                    Sign In
-                </Button>
-                <Grid container>
-                    <Grid item xs>
-                        <Link href="#" variant="body2">
-                            Forgot password?
-                        </Link>
-                    </Grid>
-                    <Grid item>
-                        <Link variant="body2" href="/signup/" >
-                            {"Don't have an account? Sign Up"}
-                        </Link>
-                    </Grid>
-                </Grid>
-                {/* </form> */}
-            </div>
-            <Box mt={8}>
-                <Copyright />
-            </Box>
-        </Container>
+
+    return (
+        <>
+            {!store.UserReducer.userInfo.token ?
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        {/* <form className={classes.form} noValidate> */}
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            onChange={((e) => setLoginData(e, 'email'))}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            onChange={((e) => setLoginData(e, 'password'))}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={userLogin}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link variant="body2" href="/signup/" >
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                        {/* </form> */}
+                    </div>
+                    <Box mt={8}>
+                        <Copyright />
+                    </Box>
+                </Container> :
+                history.push('/')
+            }
+        </>
 
     )
 }

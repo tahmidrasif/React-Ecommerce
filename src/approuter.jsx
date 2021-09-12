@@ -25,6 +25,9 @@ const Approuter = () => {
             <Route exact path='/login/'>
                 <Login />
             </Route>
+            <Route path='*'>
+                <p>404 Not Found</p>
+            </Route>
         </Switch>
     );
 

@@ -49,7 +49,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { UserAction } from './store/actions/userActions/userAction';
-import { GetCategoryList } from './store/actions/categoryAction/categoryAction'
+import { CurrentCategoryAction, GetCategoryList } from './store/actions/categoryAction/categoryAction'
 
 const drawerWidth = 240;
 
@@ -173,6 +173,15 @@ function App() {
     history.push('/login')
   }
 
+  const GetProductsByCategory = (category) => {
+    
+    if (category) {
+      console.log(category,'=== category clicked app js')
+      dispatch(CurrentCategoryAction(category));
+      //console.log(userInfo.token, '===userinfo token')
+    }
+  }
+
   //console.log(store.UserReducer.userInfo.token,'===user reducer in app.js')
   return (
 
@@ -259,7 +268,7 @@ function App() {
               {categoryList.map((item) =>
 
 
-                <ListItem button key='Categories'>
+                <ListItem button key='Categories' onClick={()=>GetProductsByCategory(item)}>
                   <ListItemIcon><CategoryIcon />  </ListItemIcon>
                   <ListItemText primary={item.name} />
                 </ListItem>

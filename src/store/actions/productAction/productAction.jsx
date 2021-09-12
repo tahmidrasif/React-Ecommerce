@@ -22,3 +22,14 @@ export const GetProductList = () => {
 
   }
 }
+
+export const GetProductByCategoryId = (id) => {
+  return async (dispatch) => {
+    console.log(id,'===products by category axios')
+    const response = await axios.get(GlobalConstant.BASE_URL + '/products/category'+id)
+
+    if (response.data.length)
+      dispatch(ProductAction(response.data))
+
+  }
+}
