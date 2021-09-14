@@ -11,6 +11,7 @@ import {
 import ProductList from './components/products/productList';
 import ProductDetails from './components/products/productDetails'
 import Login from './components/login';
+import Cart from './components/cart/cart';
 
 const Approuter = () => {
 
@@ -24,6 +25,9 @@ const Approuter = () => {
             </Route>
             <Route exact path='/login/'>
                 <Login />
+            </Route>
+            <Route exact path='/cart/'>
+                <Cart />
             </Route>
             <Route path='*'>
                 <p>404 Not Found</p>

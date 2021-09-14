@@ -43,3 +43,10 @@ signin
     "email": "test@gmail.com",
     "password": "Test1234."
 }
+
+
+{"product":{
+  		"id": "61397d22a7fb34087c4e603c",
+  		"quantity" : 10
+  	}
+}

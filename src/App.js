@@ -176,6 +176,7 @@ function App() {
   const GetProductsByCategory = (category) => {
     
     if (category) {
+      history.push('/')
       dispatch(CurrentCategoryAction(category));
       //console.log(userInfo.token, '===userinfo token')
     }
