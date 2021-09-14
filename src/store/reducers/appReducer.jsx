@@ -4,18 +4,25 @@ import CategoryReducer from "../reducers/categoryReducer/categoryReducer";
 import ProductReducer from "./productReducer/productReducer";
 import { persistReducer } from 'redux-persist';
 import storage from "redux-persist/lib/storage";
+import CartReducer from "./cartReducer/cartReducer";
 
 const persistConfig={
     key:'root',
     storage: storage
 }
-export const persistedUserStore=persistReducer(persistConfig, UserReducer)
 
+
+const combinePersistReducer = combineReducers({
+    UserReducer,
+    CartReducer
+  })
+
+  export const persistedStore=persistReducer(persistConfig, combinePersistReducer)
 
 export const AppReducer= combineReducers({
-    UserReducer:persistedUserStore,
+    persistedStore,
     CategoryReducer,
-    ProductReducer,
+    ProductReducer
 
 })
 

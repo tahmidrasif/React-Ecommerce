@@ -60,7 +60,7 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const { productList } = useSelector((store) => store.ProductReducer)
   const { currentCategory } = useSelector((store) => store.CategoryReducer)
-  const { userInfo } = useSelector((store) => store.UserReducer)
+  const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
   const [currentCategoryName,setCurrentCategoryName]=useState();
 
 
@@ -88,7 +88,7 @@ const ProductList = () => {
   const AddToCart=(product)=>{
     console.log('Addto cart')
     if(userInfo.token){
-      
+
     } 
   }
   return (

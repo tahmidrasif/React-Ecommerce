@@ -155,11 +155,6 @@ function App() {
     if (!categoryList.length)
       dispatch(GetCategoryList())
 
-    //console.log(categoryList, '===useEffect in appjs');
-    categoryList.map((item) => {
-    //  console.log(item, '===loop through category item');
-    })
-
 
   }, [categoryList])
 
@@ -182,7 +177,7 @@ function App() {
     }
   }
 
-  //console.log(store.UserReducer.userInfo.token,'===user reducer in app.js')
+
   return (
 
     <>
@@ -216,9 +211,9 @@ function App() {
                   <ShoppingBasketIcon />
                 </Badge>
               </IconButton>
-              <IconButton color="inherit" onClick={() => setLoginLogout(store.UserReducer.userInfo)}>
+              <IconButton color="inherit" onClick={() => setLoginLogout(store.persistedStore.UserReducer.userInfo)}>
                 <Badge color="secondary">
-                  {!store.UserReducer.userInfo.token ? 'Log in' : 'Log out'}
+                  {!store.persistedStore.UserReducer.userInfo.token ? 'Log in' : 'Log out'}
                 </Badge>
               </IconButton>
 
@@ -231,7 +226,7 @@ function App() {
             }}
             open={open}
           >
-            {store.UserReducer.userInfo.token && store.UserReducer.userInfo.role === 'admin' ?
+            {store.persistedStore.UserReducer.userInfo.token && store.persistedStore.UserReducer.userInfo.role === 'admin' ?
               <>
                 <Divider />
                 <List

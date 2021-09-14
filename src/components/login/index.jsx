@@ -112,7 +112,7 @@ const Login = () => {
 
     return (
         <>
-            {!store.UserReducer.userInfo.token ?
+            {!store.persistedStore.UserReducer.userInfo.token ?
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <div className={classes.paper}>

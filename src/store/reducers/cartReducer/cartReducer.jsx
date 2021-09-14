@@ -9,11 +9,11 @@ const intialState={
 const CartReducer=(state=intialState,action)=>{
 
     switch(action.type){
-        case(ActionType.CATEGORY_LIST):{
+        case(ActionType.CART_LIST):{
             return {...state,cartList:action.payload}
            
         }
-        case(ActionType.CURRENT_CATEGORY):{
+        case(ActionType.CART_PRODUCT):{
 
             return {...state,currentCartProduct:action.payload}
            
