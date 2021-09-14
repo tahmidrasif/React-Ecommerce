@@ -60,6 +60,7 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const { productList } = useSelector((store) => store.ProductReducer)
   const { currentCategory } = useSelector((store) => store.CategoryReducer)
+  const { userInfo } = useSelector((store) => store.UserReducer)
   const [currentCategoryName,setCurrentCategoryName]=useState();
 
 
@@ -84,6 +85,12 @@ const ProductList = () => {
 
   }, [productList,currentCategory])
 
+  const AddToCart=(product)=>{
+    console.log('Addto cart')
+    if(userInfo.token){
+      
+    } 
+  }
   return (
 
     <React.Fragment>
@@ -116,7 +123,7 @@ const ProductList = () => {
                     <Button size="small" color="primary">
                       Details
                     </Button>
-                    <Button size="small" color="primary">
+                    <Button size="small" color="primary" onClick={()=>AddToCart(item)}>
                       Add To Cart
                     </Button>
                   </CardActions>
