@@ -176,7 +176,6 @@ function App() {
   const GetProductsByCategory = (category) => {
     
     if (category) {
-      console.log(category,'=== category clicked app js')
       dispatch(CurrentCategoryAction(category));
       //console.log(userInfo.token, '===userinfo token')
     }

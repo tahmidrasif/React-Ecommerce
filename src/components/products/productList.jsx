@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { GetProductByCategoryId, GetProductList } from '../../store/actions/productAction/productAction';
 import { GlobalConstant } from '../../lib/constant';
+import { CurrentCategoryAction } from '../../store/actions/categoryAction/categoryAction';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -59,18 +60,25 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const { productList } = useSelector((store) => store.ProductReducer)
   const { currentCategory } = useSelector((store) => store.CategoryReducer)
+  const [currentCategoryName,setCurrentCategoryName]=useState();
+
 
   useEffect(() => {
-    console.log(currentCategory.name, '===productList currentCategory useeffect ')
+   
     if (!productList.length) {
 
-      if (currentCategory.name) {
-        dispatch(GetProductByCategoryId(currentCategory._id))
-       
-      }
-      else {
         dispatch(GetProductList())
+
+
+    }
+    if (currentCategory.name) {
+     
+      if(currentCategory.name!==currentCategoryName){
+        console.log(currentCategoryName, '==in if')
+        setCurrentCategoryName(currentCategory.name);
+        dispatch(GetProductByCategoryId(currentCategory._id))
       }
+      //
 
     }
 

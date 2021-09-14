@@ -16,7 +16,7 @@ export const CategoryAction = (categories) => {
 
 
 export const CurrentCategoryAction = (category) => {
-    console.log(category,'=== category clicked in action')
+
     return (
         {
             type: ActionType.CURRENT_CATEGORY,
@@ -29,7 +29,7 @@ export const GetCategoryList = () => {
     return (
         async (dispatch) => {
             const response = await axios.get(GlobalConstant.BASE_URL + '/category')
-            console.log(response, '===category thunk')
+
             if(response.data.length)
             dispatch(CategoryAction(response.data))
         }
