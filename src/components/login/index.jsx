@@ -27,6 +27,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { UserAction } from '../../store/actions/userActions/userAction';
+import { GlobalConstant } from '../../lib/constant';
 
 
 
@@ -82,7 +83,7 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:8080/signin',
+            const response = await axios.post(GlobalConstant.BASE_URL+'/signin',
                 {
                     email: user.email,
                     password: user.password

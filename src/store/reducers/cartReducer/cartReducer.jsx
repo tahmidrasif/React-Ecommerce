@@ -1,7 +1,7 @@
 import { ActionType } from "../../../lib/constant";
 
 const intialState={
-    cartList:[],
+    cartListCount:[],
     currentCartProduct:{}
 }
 
@@ -9,8 +9,8 @@ const intialState={
 const CartReducer=(state=intialState,action)=>{
 
     switch(action.type){
-        case(ActionType.CART_LIST):{
-            return {...state,cartList:action.payload}
+        case(ActionType.CART_LIST_COUNT):{
+            return {...state,cartListCount:action.payload}
            
         }
         case(ActionType.CART_PRODUCT):{

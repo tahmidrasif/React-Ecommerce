@@ -148,7 +148,8 @@ function App() {
 
 
   const { categoryList } = useSelector((store) => store.CategoryReducer);
-
+  const { cartList } = useSelector((store) => store.persistedStore.CartReducer)
+  console.log(cartList,'==== cart count')
 
   useEffect(() => {
 
@@ -207,7 +208,7 @@ function App() {
 
 
               <IconButton color="inherit">
-                <Badge color="secondary">
+                <Badge color="secondary" badgeContent={0}>
                   <ShoppingBasketIcon />
                 </Badge>
               </IconButton>

@@ -18,8 +18,10 @@ import Copyright from '../uicomponents/copyright';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { GetProductByCategoryId, GetProductList } from '../../store/actions/productAction/productAction';
-import { GlobalConstant } from '../../lib/constant';
+import { ActionType, GlobalConstant } from '../../lib/constant';
 import { CurrentCategoryAction } from '../../store/actions/categoryAction/categoryAction';
+import { currentCartProductAction, setPersistedProductToCarAction, setProductToCartAction } from '../../store/actions/cartAction/cartAction';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -58,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 const ProductList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history=useHistory();
   const { productList } = useSelector((store) => store.ProductReducer)
   const { currentCategory } = useSelector((store) => store.CategoryReducer)
   const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
@@ -86,10 +89,16 @@ const ProductList = () => {
   }, [productList,currentCategory])
 
   const AddToCart=(product)=>{
-    console.log('Addto cart')
-    if(userInfo.token){
 
+    
+    if(userInfo.token){
+      dispatch(setProductToCartAction(product,userInfo.token,ActionType.PRODCUT_ADD))
     } 
+    else{
+      dispatch(currentCartProductAction(product))
+      history.push('/login')
+    }
+    
   }
   return (
 
