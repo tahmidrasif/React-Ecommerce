@@ -20,7 +20,7 @@ import { useSelector } from 'react-redux';
 import { GetProductByCategoryId, GetProductList } from '../../store/actions/productAction/productAction';
 import { ActionType, GlobalConstant } from '../../lib/constant';
 import { CurrentCategoryAction } from '../../store/actions/categoryAction/categoryAction';
-import { currentCartProductAction, setPersistedProductToCarAction, setProductToCartAction } from '../../store/actions/cartAction/cartAction';
+import { currentCartProductAction, GetCartListCount, setPersistedProductToCarAction, setProductToCartAction } from '../../store/actions/cartAction/cartAction';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +68,7 @@ const ProductList = () => {
 
 
   useEffect(() => {
-   
+
     if (!productList.length) {
 
         dispatch(GetProductList())
@@ -76,7 +76,11 @@ const ProductList = () => {
 
     }
     if (currentCategory.name) {
-     
+     if(currentCategory.name==='all'){
+      dispatch(GetProductList())
+      dispatch(CurrentCategoryAction({}));
+
+     }
       if(currentCategory.name!==currentCategoryName){
         console.log(currentCategoryName, '==in if')
         setCurrentCategoryName(currentCategory.name);
@@ -86,6 +90,7 @@ const ProductList = () => {
 
     }
 
+
   }, [productList,currentCategory])
 
   const AddToCart=(product)=>{
@@ -93,6 +98,7 @@ const ProductList = () => {
     
     if(userInfo.token){
       dispatch(setProductToCartAction(product,userInfo.token,ActionType.PRODCUT_ADD))
+      //history.push('/cart')
     } 
     else{
       dispatch(currentCartProductAction(product))

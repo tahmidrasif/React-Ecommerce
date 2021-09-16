@@ -11,6 +11,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Counter from './counter';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { GetAllCartList } from '../../store/actions/cartAction/cartAction';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -20,14 +26,40 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(8),
         paddingBottom: theme.spacing(8),
     },
-  
+
 }));
 
 
 
 const Cart = () => {
     const classes = useStyles();
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
+    const { cartList } = useSelector((store) => store.persistedStore.CartReducer)
+    const [buttonClick, setButtonClick] = useState('N')
+    useEffect(() => {
+        if (!userInfo.token) {
+            history.push('/login')
+            return;
+        }
+        else {
 
+            dispatch(GetAllCartList(userInfo.token))
+            setButtonClick('N')
+
+
+            // cartList.map((item) => {
+            //     console.log(item, '=== cart list travarse')
+            // })
+        }
+    }, [buttonClick])
+  console.log(buttonClick,'button clicked')
+
+   const ToggleCartButton=()=>{
+
+       setButtonClick('Y')
+   }
     return (
         <React.Fragment>
             <CssBaseline />
@@ -49,15 +81,18 @@ const Cart = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableRow key='test'>
+                                    {
+                                        cartList.map((item) => (
+                                            <TableRow key='test'>
 
-                                        <TableCell align="left">  test</TableCell>
-                                        <TableCell align="left">  test</TableCell>
-                                        <TableCell align="left">  test</TableCell>
-                                        <TableCell align="left"> <Counter/> </TableCell>
-                                        <TableCell align="left">  test</TableCell>
-                                    </TableRow>
-
+                                                <TableCell align="left">  {item.productId.title}</TableCell>
+                                                <TableCell align="left">  {item.quantity}</TableCell>
+                                                <TableCell align="left">  {item.productId.price}</TableCell>
+                                                <TableCell align="left"> <Counter product={item.productId} ToggleCartButton={ToggleCartButton} /> </TableCell>
+                                                <TableCell align="left">  {parseFloat(item.quantity) * parseFloat(item.productId.price)}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    }
                                     {/* {rows.map((row) => (
                         <TableRow key={row.name}>
                             <TableCell component="th" scope="row">

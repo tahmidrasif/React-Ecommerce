@@ -27,7 +27,8 @@ import {
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { UserAction } from '../../store/actions/userActions/userAction';
-import { GlobalConstant } from '../../lib/constant';
+import { ActionType, GlobalConstant } from '../../lib/constant';
+import { currentCartProductAction, GetCartListCount, setProductToCartAction } from '../../store/actions/cartAction/cartAction';
 
 
 
@@ -94,6 +95,13 @@ const Login = () => {
             if (response.data.userInfo) {
                 dispatch(UserAction(response.data.userInfo))
                 alert(response.data.message)
+                if(store.persistedStore.CartReducer.currentCartProduct){
+                    console.log(store.persistedStore.CartReducer.currentCartProduct,'===persisted product')
+                    const product=store.persistedStore.CartReducer.currentCartProduct;
+                    dispatch(setProductToCartAction(product,response.data.userInfo.token,ActionType.PRODCUT_ADD))
+                    dispatch(currentCartProductAction({}))
+                    dispatch(GetCartListCount(response.data.userInfo.token))
+                }
                 history.push('/')
             }
             else {

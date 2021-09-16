@@ -8,6 +8,10 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import MailIcon from '@material-ui/icons/Mail';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { setProductToCartAction } from '../../store/actions/cartAction/cartAction';
+import { ActionType } from '../../lib/constant';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,15 +26,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Counter() {
+export default function Counter({product,ToggleCartButton}) {
   const classes = useStyles();
   const [count, setCount] = React.useState(1);
   const [invisible, setInvisible] = React.useState(false);
+  const dispatch=useDispatch();
+  const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
 
   const handleBadgeVisibility = () => {
     setInvisible(!invisible);
   };
 
+const AddToCart=(product)=>{
+  if(userInfo.token){
+    dispatch(setProductToCartAction(product,userInfo.token,ActionType.PRODCUT_ADD))
+    ToggleCartButton();
+    //history.push('/cart')
+  } 
+
+}
+
+ console.log(product,'===in counter comp')
   return (
     <div className={classes.root}>
       <div>
@@ -47,7 +63,7 @@ export default function Counter() {
           <Button
             aria-label="increase"
             onClick={() => {
-              setCount(count + 1);
+              AddToCart(product)
             }}
           >
             <AddIcon fontSize="small" />

@@ -50,6 +50,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { UserAction } from './store/actions/userActions/userAction';
 import { CurrentCategoryAction, GetCategoryList } from './store/actions/categoryAction/categoryAction'
+import { CartListAction, CartTotalItem, currentCartProductAction, GetCartListCount } from './store/actions/cartAction/cartAction';
 
 const drawerWidth = 240;
 
@@ -149,36 +150,49 @@ function App() {
 
   const { categoryList } = useSelector((store) => store.CategoryReducer);
   const { cartList } = useSelector((store) => store.persistedStore.CartReducer)
-  console.log(cartList,'==== cart count')
+  const { cartCount } = useSelector((store) => store.persistedStore.CartReducer)
+  const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
+
 
   useEffect(() => {
-
+    console.log(cartCount, '===user effect app js')
     if (!categoryList.length)
       dispatch(GetCategoryList())
+    if (userInfo.token)
+      dispatch(GetCartListCount(userInfo.token))
 
-
-  }, [categoryList])
+  }, [categoryList, cartCount])
 
 
   const setLoginLogout = (userInfo) => {
 
     if (userInfo.token) {
       dispatch(UserAction({}));
+      dispatch(currentCartProductAction({}))
+      dispatch(CartListAction([]))
+      dispatch(CartTotalItem(0))
       //console.log(userInfo.token, '===userinfo token')
     }
     history.push('/login')
   }
 
+
   const GetProductsByCategory = (category) => {
-    
+
     if (category) {
       history.push('/')
       dispatch(CurrentCategoryAction(category));
       //console.log(userInfo.token, '===userinfo token')
     }
   }
+  const GoToCart = () => {
+    history.push('/cart')
+  }
 
-
+  const GoToHomePage = () => {
+    dispatch(CurrentCategoryAction({name:'all'}));
+    history.push('/')
+  }
   return (
 
     <>
@@ -206,12 +220,13 @@ function App() {
                 My-Ecommerce
               </Typography>
 
-
-              <IconButton color="inherit">
-                <Badge color="secondary" badgeContent={0}>
-                  <ShoppingBasketIcon />
-                </Badge>
-              </IconButton>
+              {store.persistedStore.UserReducer.userInfo.token &&
+                < IconButton color="inherit" onClick={GoToCart}>
+                  <Badge color="secondary" badgeContent={cartCount}>
+                    <ShoppingBasketIcon />
+                  </Badge>
+                </IconButton>
+              }
               <IconButton color="inherit" onClick={() => setLoginLogout(store.persistedStore.UserReducer.userInfo)}>
                 <Badge color="secondary">
                   {!store.persistedStore.UserReducer.userInfo.token ? 'Log in' : 'Log out'}
@@ -261,15 +276,19 @@ function App() {
                 </ListSubheader>
               }>
               {/* {secondaryListItems} */}
+              <ListItem button key='Categories' onClick={() => GoToHomePage()}>
+                <ListItemIcon><CategoryIcon />  </ListItemIcon>
+                <ListItemText primary='All Products' />
+              </ListItem>
               {categoryList.map((item) =>
 
 
-                <ListItem button key='Categories' onClick={()=>GetProductsByCategory(item)}>
+                <ListItem button key='Categories' onClick={() => GetProductsByCategory(item)}>
                   <ListItemIcon><CategoryIcon />  </ListItemIcon>
                   <ListItemText primary={item.name} />
                 </ListItem>
               )}
-              
+
             </List>
           </Drawer>
           <main className={classes.content}>
