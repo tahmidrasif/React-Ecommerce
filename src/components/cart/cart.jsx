@@ -15,8 +15,10 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { GetAllCartList } from '../../store/actions/cartAction/cartAction';
+import { CartListAction, CartTotalItem, CheckOutAction, GetAllCartList, RemoveProductToggleAction } from '../../store/actions/cartAction/cartAction';
 import { useState } from 'react';
+import Button from '@mui/material/Button';
+import { CheckOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -37,29 +39,44 @@ const Cart = () => {
     const dispatch = useDispatch();
     const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
     const { cartList } = useSelector((store) => store.persistedStore.CartReducer)
-    const [buttonClick, setButtonClick] = useState('N')
+    const [totalPrice, setTotalPrice] = useState(0)
     useEffect(() => {
+
+        console.log('use effect in cart')
         if (!userInfo.token) {
             history.push('/login')
             return;
         }
         else {
-
-            dispatch(GetAllCartList(userInfo.token))
-            setButtonClick('N')
-
-
-            // cartList.map((item) => {
-            //     console.log(item, '=== cart list travarse')
-            // })
+            let total = 0;
+            cartList.map((item) => (
+                total += parseFloat(item.quantity) * parseFloat(item.productId.price)
+            ))
+            setTotalPrice(total);
         }
-    }, [buttonClick])
-  console.log(buttonClick,'button clicked')
+    }, [cartList])
+    //console.log(buttonClick,'button clicked')
+    //console.log(cartList,'cart list')
+    const ToggleCartButton = () => {
 
-   const ToggleCartButton=()=>{
 
-       setButtonClick('Y')
-   }
+    }
+
+    const deleteCartProduct=(item)=>{
+
+        if (window.confirm('Are you sure you want to delete the product')) {
+            dispatch(RemoveProductToggleAction(item,userInfo.token,'true'))
+          } else {
+            // Do nothing!
+            console.log('Thing was not saved to the database.');
+          }
+    }
+
+    const CheckOut=()=>{
+        var a=dispatch(CheckOutAction(userInfo.token))
+        console.log(a,'=== return value of a')
+        history.push('/checkout')
+    }
     return (
         <React.Fragment>
             <CssBaseline />
@@ -78,6 +95,7 @@ const Cart = () => {
                                         <TableCell align="left">Unit Price</TableCell>
                                         <TableCell align="left"></TableCell>
                                         <TableCell align="left">Total</TableCell>
+                                        <TableCell align="left"></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -90,20 +108,43 @@ const Cart = () => {
                                                 <TableCell align="left">  {item.productId.price}</TableCell>
                                                 <TableCell align="left"> <Counter product={item.productId} ToggleCartButton={ToggleCartButton} /> </TableCell>
                                                 <TableCell align="left">  {parseFloat(item.quantity) * parseFloat(item.productId.price)}</TableCell>
+                                                <TableCell align="left">
+                                                    <Button variant="outlined" color="error" onClick={()=>deleteCartProduct(item.productId)}>
+                                                        Delete
+                                                    </Button>
+                                                </TableCell>
                                             </TableRow>
                                         ))
+
                                     }
-                                    {/* {rows.map((row) => (
-                        <TableRow key={row.name}>
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
-                            <TableCell align="right">{row.carbs}</TableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
-                        </TableRow>
-                    ))} */}
+                                    {cartList.length ?
+                                        <>
+                                            <TableRow key='test'>
+
+                                                <TableCell align="left"> </TableCell>
+                                                <TableCell align="left">  </TableCell>
+                                                <TableCell align="left">  </TableCell>
+                                                <TableCell align="center"> Total </TableCell>
+                                                <TableCell align="left"> {totalPrice} </TableCell>
+                                                <TableCell align="left"></TableCell>
+                                            </TableRow>
+                                            <TableRow key='test'>
+
+                                                <TableCell align="left"> </TableCell>
+                                                <TableCell align="left">  </TableCell>
+                                                <TableCell align="left">  </TableCell>
+                                                <TableCell align="center">  </TableCell>
+                                                <TableCell align="left">  </TableCell>
+                                                <TableCell align="left">
+                                                    <Button variant="outlined" color="error" onClick={CheckOut}>
+                                                        Checkout
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        </>
+                                        : <></>
+                                    }
+
                                 </TableBody>
                             </Table>
                         </TableContainer>

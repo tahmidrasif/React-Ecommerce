@@ -12,6 +12,7 @@ import ProductList from './components/products/productList';
 import ProductDetails from './components/products/productDetails'
 import Login from './components/login';
 import Cart from './components/cart/cart';
+import CheckOut from './components/uicomponents/confirm';
 
 const Approuter = () => {
 
@@ -28,6 +29,9 @@ const Approuter = () => {
             </Route>
             <Route exact path='/cart/'>
                 <Cart />
+            </Route>
+            <Route exact path='/checkout/'>
+                <CheckOut />
             </Route>
             <Route path='*'>
                 <p>404 Not Found</p>

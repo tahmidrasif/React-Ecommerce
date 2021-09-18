@@ -10,7 +10,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { setProductToCartAction } from '../../store/actions/cartAction/cartAction';
+import { AddProductToggleAction, RemoveProductToggleAction, setProductToCartAction } from '../../store/actions/cartAction/cartAction';
 import { ActionType } from '../../lib/constant';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,14 +39,25 @@ export default function Counter({product,ToggleCartButton}) {
 
 const AddToCart=(product)=>{
   if(userInfo.token){
+    //ToggleCartButton();
     dispatch(setProductToCartAction(product,userInfo.token,ActionType.PRODCUT_ADD))
-    ToggleCartButton();
+   
     //history.push('/cart')
   } 
 
 }
 
- console.log(product,'===in counter comp')
+const RemoveToCart=(product)=>{
+  if(userInfo.token){
+    //ToggleCartButton();
+    dispatch(RemoveProductToggleAction(product,userInfo.token))
+    
+    //history.push('/cart')
+  } 
+
+}
+
+ //console.log(product,'===in counter comp')
   return (
     <div className={classes.root}>
       <div>
@@ -55,7 +66,7 @@ const AddToCart=(product)=>{
           <Button
             aria-label="reduce"
             onClick={() => {
-              setCount(Math.max(count - 1, 0));
+              RemoveToCart(product)
             }}
           >
             <RemoveIcon fontSize="small" />

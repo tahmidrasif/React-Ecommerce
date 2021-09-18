@@ -3,7 +3,8 @@ import { ActionType } from "../../../lib/constant";
 const intialState={
     cartList:[],
     currentCartProduct:{},
-    cartCount:0
+    cartCount:0,
+    toggleButton:'N'
 }
 
 
@@ -22,6 +23,10 @@ const CartReducer=(state=intialState,action)=>{
         case(ActionType.CART_LIST_COUNT):{
 
             return {...state,cartCount:action.payload}
+           
+        }
+        case(ActionType.TOGGLE_BUTTON):{
+            return {...state,toggleButton:action.payload}
            
         }
         default:

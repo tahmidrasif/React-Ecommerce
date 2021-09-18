@@ -8,7 +8,9 @@ export const ActionType={
     CART_PRODUCT:'cart_product',
     SET_PRODUCT_TO_CART:'set_prodcut_to_cart',
     PRODCUT_ADD:'product_add',
-    PRODUCT_REMOVE:'product_remove'
+    PRODUCT_REMOVE:'product_remove',
+    TOGGLE_BUTTON:'toggle_button',
+    ORDER_NUMBER:'order_number'
 }
 
 export const GlobalConstant={

@@ -155,7 +155,7 @@ function App() {
 
 
   useEffect(() => {
-    console.log(cartCount, '===user effect app js')
+    //console.log(cartCount, '===user effect app js')
     if (!categoryList.length)
       dispatch(GetCategoryList())
     if (userInfo.token)

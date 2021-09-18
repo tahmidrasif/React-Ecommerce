@@ -2,12 +2,13 @@
 import axios from "axios"
 import { useHistory } from "react-router"
 import { ActionType, GlobalConstant } from "../../../lib/constant"
+import { OrderNumberAction } from "../otherAction/otherAction"
 
 
 
 export const CartListAction = (cart) => {
 
-    console.log(cart, '=== in cart Action')
+    //console.log(cart, '=== in cart Action')
     return (
         {
             type: ActionType.CART_LIST,
@@ -15,7 +16,7 @@ export const CartListAction = (cart) => {
         }
     )
 }
-export  const CartTotalItem=(total)=>{
+export const CartTotalItem = (total) => {
     return (
         {
             type: ActionType.CART_LIST_COUNT,
@@ -35,34 +36,40 @@ export const currentCartProductAction = (product) => {
     )
 }
 
-export const GetAllCartList=(token)=>{
+export const GetAllCartList = (token) => {
     return (
         async (dispatch) => {
             const AuthStr = 'bearer '.concat(token);
             let response = await axios.get(GlobalConstant.BASE_URL + '/cart', { headers: { Authorization: AuthStr } })
-            if (response.data.status!=='error') {
+            console.log(response,'====response in get all cart list action')
+            if (response.data.status !== 'error') {
                 const productArr = response.data.products;
 
                 dispatch(CartListAction(productArr))
+            }
+            else{
+                dispatch(CartListAction([]))
             }
         }
     )
 }
 
-export  const GetCartListCount=(token)=>{
+export const GetCartListCount = (token) => {
     return (
         async (dispatch) => {
             const AuthStr = 'bearer '.concat(token);
             let response = await axios.get(GlobalConstant.BASE_URL + '/cart', { headers: { Authorization: AuthStr } })
-            if (response.data.status!=='error') {
+            let total = 0;
+            if (response.data.status !== 'error') {
                 const productArr = response.data.products;
-                let total=0;
-                console.log('in Cart List Count Action')
-                productArr.map((item) =>(
-                   total+= parseInt(item.quantity)
+                
+                //console.log('in Cart List Count Action')
+                productArr.map((item) => (
+                    total += parseInt(item.quantity)
                 ))
-                dispatch(CartTotalItem(total))
+                
             }
+            dispatch(CartTotalItem(total))
         }
     )
 }
@@ -75,7 +82,7 @@ export const setProductToCartAction = (product, token, operation) => {
             const AuthStr = 'bearer '.concat(token);
             let response = await axios.get(GlobalConstant.BASE_URL + '/cart', { headers: { Authorization: AuthStr } })
 
-            if (response.data.status!=='error') {
+            if (response.data.status !== 'error') {
                 const productArr = response.data.products;
 
                 // let productCounter=0;
@@ -86,26 +93,26 @@ export const setProductToCartAction = (product, token, operation) => {
                 const filterProduct = productArr.find(x => x.productId._id === product._id);
                 if (filterProduct) {
                     const currentProdId = filterProduct.productId._id;
-                    let currentQty=0
+                    let currentQty = 0
                     if (operation === ActionType.PRODCUT_ADD) {
-                         currentQty = parseInt(filterProduct.quantity) + 1;
+                        currentQty = parseInt(filterProduct.quantity) + 1;
                     }
-                    else{
-                        if(parseInt(filterProduct.quantity)!==0)
-                        currentQty = parseInt(filterProduct.quantity) - 1;
+                    else {
+                        if (parseInt(filterProduct.quantity) !== 0)
+                            currentQty = parseInt(filterProduct.quantity) - 1;
                     }
-                        // console.log(currentProdId, '====cart currentProdId');
-                        // console.log(currentQty, '====cart currentQty');
-                        let payload = {
-                            product: { id: currentProdId, quantity: currentQty }
-                        }
-                        // console.log(payload,'==payload')
-                        response = await axios.post(GlobalConstant.BASE_URL + '/cart', payload, { headers: { Authorization: AuthStr } });
 
-                        if(response.statusText==='OK'){
-                            alert('product added successfully to the cart if')
-                        }
-                    
+                    // console.log(currentQty, '====cart currentQty');
+                    let payload = {
+                        product: { id: currentProdId, quantity: currentQty }
+                    }
+                    console.log(payload, '==payload after toggle button')
+                    response = await axios.post(GlobalConstant.BASE_URL + '/cart', payload, { headers: { Authorization: AuthStr } });
+                    console.log(response, '==response after toggle button')
+                    if (response.statusText === 'OK') {
+                        alert('product added successfully to the cart if')
+                    }
+
                 }
                 else {
                     if (operation === ActionType.PRODCUT_ADD) {
@@ -114,7 +121,7 @@ export const setProductToCartAction = (product, token, operation) => {
                         }
                         response = await axios.post(GlobalConstant.BASE_URL + '/cart', payload, { headers: { Authorization: AuthStr } });
 
-                        if(response.statusText==='OK'){
+                        if (response.statusText === 'OK') {
                             alert('product added successfully to the cart')
                         }
                     }
@@ -128,16 +135,123 @@ export const setProductToCartAction = (product, token, operation) => {
                     }
                     response = await axios.post(GlobalConstant.BASE_URL + '/cart', payload, { headers: { Authorization: AuthStr } });
 
-                    if(response.statusText==='OK'){
+                    if (response.statusText === 'OK') {
                         alert('product added successfully to the cart')
                     }
-      
+
                 }
             }
             //if(response.data.length)
             //ispatch(CategoryAction(response.data))
             dispatch(GetCartListCount(token))
+            dispatch(GetAllCartList(token))
         }
     )
 }
 
+
+export const AddProductToggleAction = (product, token) => {
+
+
+    return (
+        async (dispatch) => {
+            const AuthStr = 'bearer '.concat(token);
+            let response = await axios.get(GlobalConstant.BASE_URL + '/cart', { headers: { Authorization: AuthStr } })
+
+            if (response.data.status !== 'error') {
+                const productArr = response.data.products;
+
+                const filterProduct = productArr.find(x => x.productId._id === product._id);
+                if (filterProduct) {
+                    const currentProdId = filterProduct.productId._id;
+                    let currentQty = 0
+
+                    currentQty = parseInt(filterProduct.quantity) + 1;
+
+                    console.log(currentQty, '====current quantity after toggle button');
+                    // console.log(currentQty, '====cart currentQty');
+                    let payload = {
+                        product: { id: currentProdId, quantity: currentQty }
+                    }
+                    console.log(payload, '==payload after toggle button')
+                    response = await axios.post(GlobalConstant.BASE_URL + '/cart', payload, { headers: { Authorization: AuthStr } });
+                    console.log(response, '==response after toggle button')
+                    if (response.statusText === 'OK') {
+                        alert('product added successfully to the cart if')
+                    }
+
+                }
+                
+
+            }
+
+            //if(response.data.length)
+            //ispatch(CategoryAction(response.data))
+            dispatch(GetCartListCount(token))
+            dispatch(GetAllCartList(token))
+        }
+    )
+}
+
+
+export const RemoveProductToggleAction = (product, token,removeAll) => {
+
+
+    return (
+        async (dispatch) => {
+            const AuthStr = 'bearer '.concat(token);
+            let response = await axios.get(GlobalConstant.BASE_URL + '/cart', { headers: { Authorization: AuthStr } })
+
+            if (response.data.status !== 'error') {
+                const productArr = response.data.products;
+
+                const filterProduct = productArr.find(x => x.productId._id === product._id);
+                if (filterProduct) {
+                    const currentProdId = filterProduct.productId._id;
+                    let currentQty = 0
+                    if(removeAll==='true')
+                    currentQty=0
+                    else
+                    currentQty = parseInt(filterProduct.quantity) - 1;
+
+                    console.log(currentQty, '====current quantity after toggle button');
+                    // console.log(currentQty, '====cart currentQty');
+                    let payload = {
+                        product: { id: currentProdId, quantity: currentQty }
+                    }
+                    console.log(payload, '==payload after toggle button')
+                    response = await axios.post(GlobalConstant.BASE_URL + '/cart', payload, { headers: { Authorization: AuthStr } });
+                    console.log(response, '==response after toggle button')
+                    if (response.statusText === 'OK') {
+                        alert('product Removed successfully to the cart if')
+                    }
+
+                }
+                
+
+            }
+
+            //if(response.data.length)
+            //ispatch(CategoryAction(response.data))
+            dispatch(GetCartListCount(token))
+            dispatch(GetAllCartList(token))
+        }
+    )
+}
+
+export const CheckOutAction=(token)=>{
+    return (
+        async(dispatch)=>{
+            const AuthStr = 'bearer '.concat(token);
+            let response = await axios.get(GlobalConstant.BASE_URL + '/order/checkout', { headers: { Authorization: AuthStr } })
+            console.log(response,'==== cart checkout response')
+            if(response.data.status===0){
+                dispatch(CartListAction([]))
+                dispatch(CartTotalItem(0))
+                dispatch(GetCartListCount(token))
+                dispatch(GetAllCartList(token))
+                dispatch(OrderNumberAction(response.data._id))
+            }
+        }
+    )
+}
