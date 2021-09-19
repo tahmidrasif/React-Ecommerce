@@ -13,6 +13,7 @@ import ProductDetails from './components/products/productDetails'
 import Login from './components/login';
 import Cart from './components/cart/cart';
 import CheckOut from './components/uicomponents/confirm';
+import ProductListAdmin from './components/products/productListAdmin';
 
 const Approuter = () => {
 
@@ -20,6 +21,7 @@ const Approuter = () => {
         <Switch>
             <Route exact path='/'>
                 <ProductList />
+
             </Route>
             <Route exact path='/product-details/'>
                 <ProductDetails />
@@ -33,9 +35,13 @@ const Approuter = () => {
             <Route exact path='/checkout/'>
                 <CheckOut />
             </Route>
+            <Route exact path='/product-admin/'>
+                <ProductListAdmin />
+            </Route>
             <Route path='*'>
                 <p>404 Not Found</p>
             </Route>
+
         </Switch>
     );
 

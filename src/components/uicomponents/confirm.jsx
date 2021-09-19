@@ -48,7 +48,7 @@ export default function CheckOut() {
                                 Your Order has been placed! ! !
                             </Typography>
                             <Typography className={classes.pos} color="textSecondary">
-                                Order No: {orderNumber}
+                                {/* Order No: {orderNumber} */}
                             </Typography>
                             {/* <Typography variant="body2" component="p">
                                 well meaning and kindly.

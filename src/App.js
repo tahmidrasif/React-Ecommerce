@@ -193,6 +193,10 @@ function App() {
     dispatch(CurrentCategoryAction({name:'all'}));
     history.push('/')
   }
+  const GotoProductAdmin=()=>{
+    if(store.persistedStore.UserReducer.userInfo.role === 'admin')
+    history.push('/product-admin')
+  }
   return (
 
     <>
@@ -258,7 +262,7 @@ function App() {
 
                   <ListItem button key='Products'>
                     <ListItemIcon><ShoppingBasketIcon />  </ListItemIcon>
-                    <ListItemText primary='Products' />
+                    <ListItemText primary='Products' onClick={GotoProductAdmin}/>
                   </ListItem>
                   <ListItem button key='Users'>
                     <ListItemIcon><PersonIcon />  </ListItemIcon>

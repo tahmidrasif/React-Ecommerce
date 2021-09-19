@@ -2,6 +2,7 @@ export const ActionType={
     AUTH_USER:"auth_user",
     CATEGORY_LIST:"category_list",
     PRODUCT_LIST:"product_list",
+    PRODUCT_INSERT:'product_insert',
     CURRENT_CATEGORY:'current_category',
     CART_LIST_COUNT:'cart_list_count',
     CART_LIST:'cart_list',
