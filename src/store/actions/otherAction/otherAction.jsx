@@ -13,3 +13,13 @@ export const OrderNumberAction = (orderno) => {
         }
     )
 }
+
+export const ShowLoaderAction = (flag) => {
+
+    return (
+        {
+            type: ActionType.IS_LOADER,
+            payload: flag
+        }
+    )
+}

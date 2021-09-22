@@ -22,6 +22,7 @@ import { ActionType, GlobalConstant } from '../../lib/constant';
 import { CurrentCategoryAction } from '../../store/actions/categoryAction/categoryAction';
 import { currentCartProductAction, GetCartListCount, setPersistedProductToCarAction, setProductToCartAction } from '../../store/actions/cartAction/cartAction';
 import { useHistory } from 'react-router';
+import { ShowLoaderAction } from '../../store/actions/otherAction/otherAction';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -65,24 +66,27 @@ const ProductList = () => {
   const { currentCategory } = useSelector((store) => store.CategoryReducer)
   const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
   const [currentCategoryName,setCurrentCategoryName]=useState();
-
+  const{ isLoaderVisible }=useSelector((store)=>store.OtherReducer)
 
   useEffect(() => {
 
+    console.log(currentCategory,'current cat reducer')
     if (!productList.length) {
-
+        dispatch(ShowLoaderAction(true))
         dispatch(GetProductList())
-
+        
 
     }
     if (currentCategory.name) {
      if(currentCategory.name==='all'){
+      //dispatch(ShowLoaderAction(true))
       dispatch(GetProductList())
       dispatch(CurrentCategoryAction({}));
 
      }
       if(currentCategory.name!==currentCategoryName){
         console.log(currentCategoryName, '==in if')
+        //dispatch(ShowLoaderAction(true))
         setCurrentCategoryName(currentCategory.name);
         dispatch(GetProductByCategoryId(currentCategory._id))
       }

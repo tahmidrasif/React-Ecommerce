@@ -51,6 +51,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserAction } from './store/actions/userActions/userAction';
 import { CurrentCategoryAction, GetCategoryList } from './store/actions/categoryAction/categoryAction'
 import { CartListAction, CartTotalItem, currentCartProductAction, GetCartListCount } from './store/actions/cartAction/cartAction';
+import AppLoader from './components/uicomponents/loader';
 
 const drawerWidth = 240;
 
@@ -152,7 +153,7 @@ function App() {
   const { cartList } = useSelector((store) => store.persistedStore.CartReducer)
   const { cartCount } = useSelector((store) => store.persistedStore.CartReducer)
   const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
-
+ const{ isLoaderVisible }=useSelector((store)=>store.OtherReducer)
 
   useEffect(() => {
     //console.log(cartCount, '===user effect app js')
@@ -197,8 +198,12 @@ function App() {
     if(store.persistedStore.UserReducer.userInfo.role === 'admin')
     history.push('/product-admin')
   }
-  return (
 
+  console.log(isLoaderVisible,'==== loader value')
+  return (
+    
+    isLoaderVisible?
+    <AppLoader />:
     <>
       <Switch>
         <Route exact path='/login/'>

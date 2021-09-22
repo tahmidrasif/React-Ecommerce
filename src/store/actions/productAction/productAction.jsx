@@ -1,5 +1,6 @@
 import axios from "axios"
 import { ActionType, GlobalConstant } from "../../../lib/constant"
+import { ShowLoaderAction } from "../otherAction/otherAction"
 
 
 export const ProductAction = (products) => {
@@ -23,11 +24,16 @@ export const ProductInsertAction = (product) => {
 export const GetProductList = () => {
   return async (dispatch) => {
 
-    const response = await axios.get(GlobalConstant.BASE_URL + '/products')
-
-    if (response.data.length)
+    let response=''
+    setTimeout(async () => {
+      response = await axios.get(GlobalConstant.BASE_URL + '/products')
+      let a=5;
+      console.log(a,'====a')
+      if (response.data.length)
       dispatch(ProductAction(response.data))
-
+      console.log(response)
+      dispatch(ShowLoaderAction(false))
+    }, 5000);
   }
 }
 
@@ -38,7 +44,7 @@ export const GetProductByCategoryId = (id) => {
     console.log(response, '===products by category axios')
     if (response.data.length)
       dispatch(ProductAction(response.data))
-
+      dispatch(ShowLoaderAction(false))
   }
 }
 

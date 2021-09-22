@@ -14,6 +14,7 @@ import Login from './components/login';
 import Cart from './components/cart/cart';
 import CheckOut from './components/uicomponents/confirm';
 import ProductListAdmin from './components/products/productListAdmin';
+import Loader from './components/uicomponents/loader';
 
 const Approuter = () => {
 
@@ -21,7 +22,7 @@ const Approuter = () => {
         <Switch>
             <Route exact path='/'>
                 <ProductList />
-
+              
             </Route>
             <Route exact path='/product-details/'>
                 <ProductDetails />

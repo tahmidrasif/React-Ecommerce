@@ -11,7 +11,8 @@ export const ActionType={
     PRODCUT_ADD:'product_add',
     PRODUCT_REMOVE:'product_remove',
     TOGGLE_BUTTON:'toggle_button',
-    ORDER_NUMBER:'order_number'
+    ORDER_NUMBER:'order_number',
+    IS_LOADER:'is_loader'
 }
 
 export const GlobalConstant={
