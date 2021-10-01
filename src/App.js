@@ -183,7 +183,7 @@ function App() {
     if (category) {
       history.push('/')
       dispatch(CurrentCategoryAction(category));
-      //console.log(userInfo.token, '===userinfo token')
+      console.log(category, '===GetProductsByCategory')
     }
   }
   const GoToCart = () => {
@@ -192,6 +192,7 @@ function App() {
 
   const GoToHomePage = () => {
     dispatch(CurrentCategoryAction({name:'all'}));
+    console.log('category', '===GoToHomePage')
     history.push('/')
   }
   const GotoProductAdmin=()=>{
@@ -199,7 +200,7 @@ function App() {
     history.push('/product-admin')
   }
 
-  console.log(isLoaderVisible,'==== loader value')
+  //  console.log(isLoaderVisible,'==== loader value')
   return (
     
     isLoaderVisible?

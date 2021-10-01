@@ -61,33 +61,38 @@ const useStyles = makeStyles((theme) => ({
 const ProductList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history=useHistory();
+  const history = useHistory();
   const { productList } = useSelector((store) => store.ProductReducer)
   const { currentCategory } = useSelector((store) => store.CategoryReducer)
   const { userInfo } = useSelector((store) => store.persistedStore.UserReducer)
-  const [currentCategoryName,setCurrentCategoryName]=useState();
-  const{ isLoaderVisible }=useSelector((store)=>store.OtherReducer)
+  const [currentCategoryName, setCurrentCategoryName] = useState();
+  //const { isLoaderVisible } = useSelector((store) => store.OtherReducer)
 
   useEffect(() => {
 
-    console.log(currentCategory,'current cat reducer')
+    console.log(currentCategory, '====currentCategory reducer')
+    console.log(currentCategoryName, '====currentCategoryName state')
     if (!productList.length) {
-        dispatch(ShowLoaderAction(true))
-        dispatch(GetProductList())
-        
+      dispatch(ShowLoaderAction(true))
+      dispatch(GetProductList())
+
 
     }
     if (currentCategory.name) {
-     if(currentCategory.name==='all'){
-      //dispatch(ShowLoaderAction(true))
-      dispatch(GetProductList())
-      dispatch(CurrentCategoryAction({}));
+      setCurrentCategoryName(currentCategory.name);
+      if (currentCategory.name === 'all') {
+        dispatch(ShowLoaderAction(true))
+        dispatch(GetProductList())
+        dispatch(CurrentCategoryAction({}));
 
-     }
-      if(currentCategory.name!==currentCategoryName){
+      }
+      // if(currentCategory.name!==currentCategoryName){
+      else {
+        dispatch(ShowLoaderAction(true))
+        dispatch(CurrentCategoryAction({}));
         console.log(currentCategoryName, '==in if')
+        console.log(currentCategory.name, '==in if')
         //dispatch(ShowLoaderAction(true))
-        setCurrentCategoryName(currentCategory.name);
         dispatch(GetProductByCategoryId(currentCategory._id))
       }
       //
@@ -95,20 +100,20 @@ const ProductList = () => {
     }
 
 
-  }, [productList,currentCategory])
+  }, [productList, currentCategory])
 
-  const AddToCart=(product)=>{
+  const AddToCart = (product) => {
 
-    
-    if(userInfo.token){
-      dispatch(setProductToCartAction(product,userInfo.token,ActionType.PRODCUT_ADD))
+
+    if (userInfo.token) {
+      dispatch(setProductToCartAction(product, userInfo.token, ActionType.PRODCUT_ADD))
       //history.push('/cart')
-    } 
-    else{
+    }
+    else {
       dispatch(currentCartProductAction(product))
       history.push('/login')
     }
-    
+
   }
   return (
 
@@ -142,7 +147,7 @@ const ProductList = () => {
                     <Button size="small" color="primary">
                       Details
                     </Button>
-                    <Button size="small" color="primary" onClick={()=>AddToCart(item)}>
+                    <Button size="small" color="primary" onClick={() => AddToCart(item)}>
                       Add To Cart
                     </Button>
                   </CardActions>

@@ -24,27 +24,29 @@ export const ProductInsertAction = (product) => {
 export const GetProductList = () => {
   return async (dispatch) => {
 
-    let response=''
-    setTimeout(async () => {
+    let response = ''
+   // setTimeout(async () => {
       response = await axios.get(GlobalConstant.BASE_URL + '/products')
-      let a=5;
-      console.log(a,'====a')
+      let a = 5;
+      //console.log(a,'====a')
       if (response.data.length)
-      dispatch(ProductAction(response.data))
-      console.log(response)
+        dispatch(ProductAction(response.data))
+      //console.log(response)
       dispatch(ShowLoaderAction(false))
-    }, 5000);
+   // }, 1000);
   }
 }
 
 export const GetProductByCategoryId = (id) => {
   return async (dispatch) => {
-    console.log(id, '===products by category axios')
-    const response = await axios.get(GlobalConstant.BASE_URL + '/products/category/' + id)
-    console.log(response, '===products by category axios')
-    if (response.data.length)
-      dispatch(ProductAction(response.data))
+    //setTimeout(async () => {
+      //console.log(id, '===products by category axios')
+      const response = await axios.get(GlobalConstant.BASE_URL + '/products/category/' + id)
+      //console.log(response, '===products by category axios')
+      if (response.data.length)
+        dispatch(ProductAction(response.data))
       dispatch(ShowLoaderAction(false))
+    //}, 1000);
   }
 }
 
@@ -64,11 +66,11 @@ export const InsertProductAction = (product, token) => {
     try {
       const AuthStr = 'bearer '.concat(token);
       const response = await axios.post(GlobalConstant.BASE_URL + '/products', payload, { headers: { Authorization: AuthStr } });
-      console.log(response, '===products inset')
+      //console.log(response, '===products inset')
       if (response.data._id) {
 
-         dispatch(ProductInsertAction(response.data))
-         alert('Product added successfully')
+        dispatch(ProductInsertAction(response.data))
+        alert('Product added successfully')
 
       }
       else {
@@ -78,7 +80,7 @@ export const InsertProductAction = (product, token) => {
     catch (e) {
       alert('Error in inserting product ')
       console.log(e, '===error')
-      
+
     }
   }
 }
